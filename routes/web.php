@@ -21,4 +21,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::get('category/{id}','CategoryController@destroy')->whereNumber('id')->name('category.destroy');
 Route::resource('category','CategoryController');

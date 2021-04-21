@@ -5,7 +5,7 @@
            
                 <div class="col-md-8">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight pl-4">
-                {{ __('Kategori Ekle') }}
+                {{ __('Kategori Düzenle') }}
                 </h2>
                 </div>
                 <div class="col-md-4 text-right pr-4">
@@ -23,20 +23,19 @@
                 @if (Session::has('message'))
                     <div class="alert alert-success">{{Session::get('message')}}</div>
                 @endif
-                <form action="{{route('category.store')}}" method="POST">
+                <form action="{{route('category.update',$category->id)}}" method="POST">
                 @csrf
-               
+                @method('PUT')
                 <div class="form-group col-md-8">
                     <label for="name" class="pt-1">Name</label>
-                    <input type="text" name="name" value="{{old('name')}}" autofocus class="form-control @error('name') is-invalid @enderror">
+                    <input type="text" name="name" value="{{$category->name}}" class="form-control @error('name') is-invalid @enderror">
                     <div class="invalid-feedback" role="alert">
                         @if($errors->any()) @foreach($errors->all() as $error) <div class="text-info"> {{$error}} </div> @endforeach @endif
                     </div>
                 </div>
                 <div class="form-group col-md-8">
-                    <button class="btn btn-outline-primary">Ekle</button>
+                    <button class="btn btn-outline-primary">Güncelle</button>
                 </div>  
-                
             </form>
             </div>
         </div>
