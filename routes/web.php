@@ -18,11 +18,13 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    
+    
     return view('dashboard');
 })->name('dashboard');
 
 Route::get('category/{id}','CategoryController@destroy')->whereNumber('id')->name('category.destroy');
-Route::resource('category','CategoryController');
+Route::resource('category','CategoryController')->middleware('auth');
 
 Route::get('product/{id}','ProductController@destroy')->whereNumber('id')->name('product.destroy');
-Route::resource('product','ProductController');
+Route::resource('product','ProductController')->middleware('auth');

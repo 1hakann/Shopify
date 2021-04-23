@@ -21,7 +21,9 @@
                 <div class="form-group col-md-12">
                     <div class="card">
                         <div class="card-header">
-
+                          @if (Session::has('message'))
+                          <div class="alert alert-success">{{Session::get('message')}}</div>
+                      @endif
                         </div>
                         <div class="card-body">
                            
@@ -45,7 +47,7 @@
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->description}}</td>
                                     <td>{{$product->price}}</td>
-                                    <td>{{$product->category_id}}</td>
+                                    <td>{{$product->category->name}}</td>
 
                                     <td> <a href="{{route('product.edit',$product->id)}}"><button class="btn btn-success" title="Düzenle">Düzenle</button></a></td>
                                     <td> 
@@ -57,7 +59,7 @@
                                         <div class="modal-dialog" role="document">
                                           <div class="modal-content">
                                             <div class="modal-header">
-                                              <h5 class="modal-title" id="exampleModalLabel">Kategori Silme Alanı</h5>
+                                              <h5 class="modal-title" id="exampleModalLabel">Ürün Silme Alanı</h5>
                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                               </button>
@@ -80,6 +82,7 @@
                                   @endforeach
                                 </tbody>
                               </table>
+                              {{$products->links()}}
                                     @else
                                     <div class="alert alert-warning">Gösterilecek Kategori Bulunamadı</div>
                                     @endif

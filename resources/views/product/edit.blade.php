@@ -5,7 +5,7 @@
            
                 <div class="col-md-8">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight pl-4">
-                {{ __('Ürün Ekle') }}
+                {{ __('Ürün Güncelle') }}
                 </h2>
                 </div>
                 <div class="col-md-4 text-right pr-4">
@@ -23,26 +23,27 @@
                 @if (Session::has('message'))
                     <div class="alert alert-success">{{Session::get('message')}}</div>
                 @endif
-                <form action="{{route('product.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('product.update',$product->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                
                 <div class="form-group col-md-8">
                     <label for="name" class="pt-1">Name</label>
-                    <input type="text" name="name" value="{{old('name')}}" autofocus class="form-control @error('name') is-invalid @enderror">
+                    <input type="text" name="name" value="{{$product->name}}" autofocus class="form-control @error('name') is-invalid @enderror">
                     <div class="invalid-feedback" role="alert">
                         @if($errors->any()) @foreach($errors->all() as $error) <div class="text-info"> {{$error}} </div> @endforeach @endif
                     </div>
                 </div>
                 <div class="form-group col-md-8">
                     <label for="name" class="pt-1">Description</label>
-                    <textarea name="description" class="form-control @error('description') is-invalid @enderror"  autofocus>{{old('description')}}</textarea>
+                    <textarea name="description" class="form-control @error('description') is-invalid @enderror"  autofocus>{{($product->description)}}</textarea>
                     <div class="invalid-feedback" role="alert">
                         @if($errors->any()) @foreach($errors->all() as $error) <div class="text-info"> {{$error}} </div> @endforeach @endif
                     </div>
                 </div>
                 <div class="form-group col-md-8">
                     <label for="name" class="pt-1">Price</label>
-                    <input type="number" name="price" value="{{old('price')}}" class="form-control" @error('price') is-invalid @enderror autofocus>
+                    <input type="number" name="price" value="{{$product->price}}" class="form-control" @error('price') is-invalid @enderror autofocus>
                     <div class="invalid-feedback" role="alert">
                         @if($errors->any()) @foreach($errors->all() as $error) <div class="text-info"> {{$error}} </div> @endforeach @endif
                     </div>
@@ -52,7 +53,7 @@
                     <select name="category"  class="form-control" @error('category_id') is-invalid @enderror>
                         <option value="">Kategori Seçin</option>
                         @foreach (App\Models\Category::all() as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}" @if ($category->id == $product->category_id) selected @endif >{{$category->name}}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback" role="alert">
@@ -61,13 +62,13 @@
                 </div>
                 <div class="form-group col-md-8">
                     <label for="name" class="pt-1">Image</label>
-                    <input type="file" name="image" value="{{old('image')}}" autofocus class="form-control @error('image') is-invalid @enderror">
+                    <input type="file" name="image" value="{{$product->image}}" autofocus class="form-control @error('image') is-invalid @enderror">
                     <div class="invalid-feedback" role="alert">
                         @if($errors->any()) @foreach($errors->all() as $error) <div class="text-info"> {{$error}} </div> @endforeach @endif
                     </div>
                 </div>
                 <div class="form-group col-md-8">
-                    <button type="submit" class="btn btn-outline-primary">Ekle</button>
+                    <button type="submit" class="btn btn-outline-primary">Güncelle</button>
                 </div>  
                 
             </form>

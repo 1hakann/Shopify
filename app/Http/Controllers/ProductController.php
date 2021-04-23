@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductUpdateRequest;
+
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -15,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->get();
+        $products = Product::latest()->paginate(5);
         return view('product.index',compact('products'));
     }
 
@@ -73,7 +75,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        return view('product.edit',compact('product'));
     }
 
     /**
@@ -83,10 +86,28 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
-        //
-    }
+        $product = Product::find($id);
+        $imgName = $product->image;
+
+        if($request->hasFile('image'))
+        {
+            $image = $request -> file('image');
+            $imgName = time().'.'.$image->getClientOriginalExtension(); 
+            $destination = public_path('/images');
+            $image->move($destination, $imgName);
+        }
+
+        $product->name = $request->get('name');
+        $product->description = $request->get('description');
+        $product->price = $request->get('price');
+        $product->category_id = $request->get('category');
+        $product->image = $imgName;
+        $product->save();
+
+        return redirect()->route('product.index')->with('message','Ürün Başarıyla Güncellendi.');
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -96,6 +117,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product ->delete();
+        return redirect()->route('product.index')->with('message','Ürün Veritabanından Silindi.');
+
     }
 }
