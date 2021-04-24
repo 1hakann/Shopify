@@ -7,6 +7,7 @@ use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -121,5 +122,17 @@ class ProductController extends Controller
         $product ->delete();
         return redirect()->route('product.index')->with('message','Ürün Veritabanından Silindi.');
 
+    }
+
+    public function listProduct()
+    { 
+        $categories = Category::with('product')->get();
+        return view('product.list',compact('categories'));
+    }
+
+    public function detailProduct($id)
+    {
+        $product = Product::find($id);
+        return view('product.detail',compact('product'));
     }
 }

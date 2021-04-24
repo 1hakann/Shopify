@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {return view('welcome');});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     
@@ -28,3 +26,6 @@ Route::resource('category','CategoryController')->middleware('auth');
 
 Route::get('product/{id}','ProductController@destroy')->whereNumber('id')->name('product.destroy');
 Route::resource('product','ProductController')->middleware('auth');
+Route::get('/','ProductController@listProduct')->name('product.list');
+Route::get('product/{id}','ProductController@detailProduct')->name('product.detail');
+
